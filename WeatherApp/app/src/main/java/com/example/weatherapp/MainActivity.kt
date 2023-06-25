@@ -9,11 +9,14 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weatherapp.models.WeatherResponse
@@ -28,6 +31,9 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var tv_main: TextView
+    private lateinit var tv_main_description: TextView
+    private lateinit var tv_temp: TextView
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     private var mProgressDialog: Dialog? = null
@@ -35,6 +41,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        tv_main = findViewById(R.id.tv_main)
+        tv_main_description = findViewById(R.id.tv_main_description)
+        tv_temp = findViewById(R.id.tv_temp)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -100,6 +109,7 @@ class MainActivity : AppCompatActivity() {
             showCustomProgressDialog()
 
             listCall.enqueue(object : Callback<WeatherResponse>{
+                @RequiresApi(Build.VERSION_CODES.N)
                 override fun onResponse(
                     call: Call<WeatherResponse>,
                     response: Response<WeatherResponse>
@@ -107,6 +117,9 @@ class MainActivity : AppCompatActivity() {
                     if(response.isSuccessful){
                         hideProgressDialog()
                         val weatherList: WeatherResponse? = response.body()
+                        if (weatherList != null) {
+                            setupUI(weatherList)
+                        }
                         Log.i("Response Result", "$weatherList")
                     }else{
                         when(response.code()){
@@ -190,6 +203,26 @@ class MainActivity : AppCompatActivity() {
         if(mProgressDialog !=null){
             mProgressDialog!!.dismiss()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setupUI(weatherList: WeatherResponse){
+        for(i in weatherList.weather.indices){
+            Log.i("Weather Name: ", weatherList.weather.toString())
+            tv_main.text  = weatherList.weather[i].main
+            tv_main_description.text = weatherList.weather[i].description
+            tv_temp.text = weatherList.main.temp.toString() + getUnit(application.resources.configuration.locales.toString())
+
+        }
+
+    }
+
+    private fun getUnit(value: String) : String?{
+        var value = "C"
+        if("US" == value){
+            value = "F"
+        }
+        return value;
     }
 
 }
