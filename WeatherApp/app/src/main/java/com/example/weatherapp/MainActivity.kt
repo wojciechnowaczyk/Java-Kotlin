@@ -29,12 +29,22 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var tv_main: TextView
     private lateinit var tv_main_description: TextView
     private lateinit var tv_temp: TextView
+    private lateinit var tv_sunrise_time: TextView
+    private lateinit var tv_sunset_time: TextView
+    private lateinit var tv_speed_unit: TextView
+    private lateinit var tv_min: TextView
+    private lateinit var tv_max: TextView
+    private lateinit var tv_country: TextView
+    private lateinit var tv_name: TextView
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+
 
     private var mProgressDialog: Dialog? = null
 
@@ -44,6 +54,13 @@ class MainActivity : AppCompatActivity() {
         tv_main = findViewById(R.id.tv_main)
         tv_main_description = findViewById(R.id.tv_main_description)
         tv_temp = findViewById(R.id.tv_temp)
+        tv_sunrise_time = findViewById(R.id.tv_sunrise_time)
+        tv_sunset_time = findViewById(R.id.tv_sunset_time)
+        tv_speed_unit = findViewById(R.id.tv_speed)
+        tv_min = findViewById(R.id.tv_min)
+        tv_max = findViewById(R.id.tv_max)
+        tv_country = findViewById(R.id.tv_country)
+        tv_name = findViewById(R.id.tv_name)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -213,6 +230,16 @@ class MainActivity : AppCompatActivity() {
             tv_main_description.text = weatherList.weather[i].description
             tv_temp.text = weatherList.main.temp.toString() + getUnit(application.resources.configuration.locales.toString())
 
+            tv_min.text = weatherList.main.temp_min.toString() + " min"
+            tv_max.text = weatherList.main.temp_max.toString() + " max"
+
+            tv_speed_unit.text = weatherList.wind.speed.toString()
+
+            tv_country.text = weatherList.sys.country
+            tv_name.text = weatherList.name
+
+            tv_sunrise_time.text = unixTime(weatherList.sys.sunrise)
+            tv_sunset_time.text = unixTime(weatherList.sys.sunset)
         }
 
     }
@@ -223,6 +250,13 @@ class MainActivity : AppCompatActivity() {
             value = "F"
         }
         return value;
+    }
+
+    private fun unixTime(timex: Long): String?{
+        val date = Date(timex *1000L)
+        val sdf = SimpleDateFormat("HH:mm", Locale.US)
+        sdf.timeZone = TimeZone.getDefault()
+        return sdf.format(date);
     }
 
 }
