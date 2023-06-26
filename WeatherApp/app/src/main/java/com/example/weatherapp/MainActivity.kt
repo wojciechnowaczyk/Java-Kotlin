@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tv_max: TextView
     private lateinit var tv_country: TextView
     private lateinit var tv_name: TextView
+    private lateinit var iv_main: ImageView
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
 
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         tv_max = findViewById(R.id.tv_max)
         tv_country = findViewById(R.id.tv_country)
         tv_name = findViewById(R.id.tv_name)
+        iv_main = findViewById(R.id.iv_main)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -240,6 +243,22 @@ class MainActivity : AppCompatActivity() {
 
             tv_sunrise_time.text = unixTime(weatherList.sys.sunrise)
             tv_sunset_time.text = unixTime(weatherList.sys.sunset)
+
+            when(weatherList.weather[i].icon){
+                "01d" -> iv_main.setImageResource(R.drawable.sunny)
+                "02d" -> iv_main.setImageResource(R.drawable.cloud)
+                "03d" -> iv_main.setImageResource(R.drawable.cloud)
+                "04d" -> iv_main.setImageResource(R.drawable.cloud)
+                "04n" -> iv_main.setImageResource(R.drawable.cloud)
+                "10d" -> iv_main.setImageResource(R.drawable.rain)
+                "13d" -> iv_main.setImageResource(R.drawable.storm)
+                "01n" -> iv_main.setImageResource(R.drawable.snowflake)
+                "02n" -> iv_main.setImageResource(R.drawable.cloud)
+                "03n" -> iv_main.setImageResource(R.drawable.cloud)
+                "10n" -> iv_main.setImageResource(R.drawable.cloud)
+                "11n" -> iv_main.setImageResource(R.drawable.rain)
+                "13n" -> iv_main.setImageResource(R.drawable.snowflake)
+            }
         }
 
     }
