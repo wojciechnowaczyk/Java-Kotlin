@@ -1,4 +1,7 @@
 package com.example.androidarchitectures.model
 
-class CountriesResponse {
-}
+import java.io.Serializable
+
+data class CountriesResponse (
+    val name: String,
+): Serializable
