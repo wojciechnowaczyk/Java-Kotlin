@@ -5,6 +5,6 @@ import retrofit2.Call
 
 interface CountriesAPI {
     @GET("all")
-    fun getCountries() : Call<CountriesResponse>
+    fun getCountries() : Call<List<CountriesResponse>>
 
 }

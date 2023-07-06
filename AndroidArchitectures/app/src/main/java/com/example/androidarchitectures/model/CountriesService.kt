@@ -7,22 +7,22 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CountriesService {
-    private var listCall: Call<CountriesResponse>? = null;
+    private var listCall: Call<List<CountriesResponse>>? = null;
 
     constructor(){
         val retrofit : Retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
         val service : CountriesAPI = retrofit
-            .create(CountriesAPI::class.java)
+            .create<CountriesAPI>(CountriesAPI::class.java)
 
         listCall = service.getCountries()
     }
 
-    fun getCountries(): Call<CountriesResponse>? {
+    fun getCountries(): Call<List<CountriesResponse>>? {
         return listCall
     }
 }
