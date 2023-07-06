@@ -9,7 +9,7 @@ import retrofit2.Response
 
 class CountriesController {
     var view: MVCActivity;
-    var service: CountriesService;
+    private var service: CountriesService;
 
     constructor(view: MVCActivity){
         this.view = view;

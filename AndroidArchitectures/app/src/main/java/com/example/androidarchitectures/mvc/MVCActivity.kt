@@ -27,18 +27,7 @@ public class MVCActivity : AppCompatActivity() {
         countriesAdapter = CountriesAdapter(countriesList = listValues)
         listRV.adapter = countriesAdapter
         countriesAdapter.notifyDataSetChanged()
-//        adapter = ArrayAdapter<String>(this, R.layout.row_layout, R.id.listText, listValues)
-//
-//        list.adapter = adapter
-//        list.setOnItemClickListener { adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
-//            Toast.makeText(this, "You clicked item list", Toast.LENGTH_LONG)
-//        }
-        var testList : ArrayList<String> = ArrayList();
-        testList.add("Poland");
-        testList.add("Germany")
-        if (testList != null) {
-            setValues(testList)
-        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
